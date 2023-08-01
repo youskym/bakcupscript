@@ -1,0 +1,112 @@
+@echo off
+chcp 65001
+
+echo.
+rem "送り先のフォルダ名やロボコピーのオプションを変更するときはここを書き換える。"
+set RobocopySource=%UserProfile%
+set RobocopySendto=%OneDriveCommercial%\個人用フォルダのバックアップ%date:~2,2%%date:~5,2%
+set RobocopyOptions=/UNICODE /XJ /MIR /DCOPY:DAT /XF *.exe *.msi *.ps1 *.scr *.vbs
+
+rem "圧縮関係のオプションを変更するときはここを書き換える。"
+set RegArcTmpDir=%UserProfile%\RegBackupTemp_%date:/=%%time::=%
+set ArchiveSendto=%RobocopySendto%\圧縮保管
+set PsCompCmd=powershell Compress-Archive -Force -LiteralPath
+
+echo.
+echo "%RobocopySource%"
+echo "から"
+echo "%RobocopySendto%"
+echo "へファイルを移動します。"
+echo.
+echo "オプションは右の通りです。%RobocopyOptions%"
+pause
+
+echo.
+echo "本当に実行しますか？"
+pause
+
+robocopy "%RobocopySource%\Contacts"  "%RobocopySendto%\Contacts"  %RobocopyOptions%
+robocopy "%RobocopySource%\Favorites" "%RobocopySendto%\Favorites" %RobocopyOptions%
+robocopy "%RobocopySource%\Desktop"   "%RobocopySendto%\Desktop"   %RobocopyOptions%
+robocopy "%RobocopySource%\Documents" "%RobocopySendto%\Documents" %RobocopyOptions% /XD "OneNote ノートブック"
+robocopy "%RobocopySource%\Pictures"  "%RobocopySendto%\Pictures"  %RobocopyOptions%
+robocopy "%RobocopySource%\Videos"    "%RobocopySendto%\Videos"    %RobocopyOptions%
+robocopy "%RobocopySource%\Music"     "%RobocopySendto%\Music"     %RobocopyOptions%
+robocopy "%RobocopySource%\Links"     "%RobocopySendto%\Links"     %RobocopyOptions%
+robocopy "%RobocopySource%\Searches"  "%RobocopySendto%\Searches"  %RobocopyOptions%
+
+echo "ターゲットディレクトリを「AppData」に移動させます"
+set RobocopySource=%RobocopySource%\AppData
+set RobocopySendto=%RobocopySendto%\AppData
+
+REM "Local Microsoft"
+robocopy "%RobocopySource%\Local\Microsoft\Excel"      "%RobocopySendto%\Local\Microsoft\Excel"      %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\IME"        "%RobocopySendto%\Local\Microsoft\IME"        %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\Office"     "%RobocopySendto%\Local\Microsoft\Office"     %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\PowerPoint" "%RobocopySendto%\Local\Microsoft\PowerPoint" %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\PowerToys"  "%RobocopySendto%\Local\Microsoft\PowerToys"  %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\Publisher"  "%RobocopySendto%\Local\Microsoft\Publisher"  %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\Visio"      "%RobocopySendto%\Local\Microsoft\Visio"      %RobocopyOptions%
+robocopy "%RobocopySource%\Local\Microsoft\Word"       "%RobocopySendto%\Local\Microsoft\Word"       %RobocopyOptions%
+REM "LocalLow Microsoft"
+robocopy "%RobocopySource%\LocalLow\Microsoft\IME"       "%RobocopySendto%\LocalLow\Microsoft\IME"       %RobocopyOptions%
+robocopy "%RobocopySource%\LocalLow\Microsoft\PowerToys" "%RobocopySendto%\LocalLow\Microsoft\PowerToys" %RobocopyOptions%
+REM "Roaming Microsoft"
+robocopy "%RobocopySource%\Roaming\Microsoft\Access"      "%RobocopySendto%\Roaming\Microsoft\Access"      %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\Excel"       "%RobocopySendto%\Roaming\Microsoft\Excel"       %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\IME"         "%RobocopySendto%\Roaming\Microsoft\IME"         %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\Office"      "%RobocopySendto%\Roaming\Microsoft\Office"      %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\PowerPoint"  "%RobocopySendto%\Roaming\Microsoft\PowerPoint"  %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\Publisher"   "%RobocopySendto%\Roaming\Microsoft\Publisher"   %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\QuickStyles" "%RobocopySendto%\Roaming\Microsoft\QuickStyles" %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\Signatures"  "%RobocopySendto%\Roaming\Microsoft\Signatures"  %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\Templates"   "%RobocopySendto%\Roaming\Microsoft\Templates"   %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Microsoft\Word"        "%RobocopySendto%\Roaming\Microsoft\Word"        %RobocopyOptions%
+REM "Adobe"
+robocopy "%RobocopySource%\Local\Adobe"    "%RobocopySendto%\Local\Adobe"    %RobocopyOptions%
+robocopy "%RobocopySource%\LocalLow\Adobe" "%RobocopySendto%\LocalLow\Adobe" %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\Adobe"  "%RobocopySendto%\Roaming\Adobe"  %RobocopyOptions%
+REM "Cisco"
+robocopy "%RobocopySource%\Local\Cisco"    "%RobocopySendto%\Local\Cisco"    %RobocopyOptions%
+REM "GIMP"
+robocopy "%RobocopySource%\Local\GIMP"   "%RobocopySendto%\Local\GIMP"   %RobocopyOptions%
+robocopy "%RobocopySource%\Roaming\GIMP" "%RobocopySendto%\Roaming\GIMP" %RobocopyOptions%
+REM "INKSCAPE"
+robocopy "%RobocopySource%\Roaming\inkscape" "%RobocopySendto%\Roaming\inkscape" %RobocopyOptions%
+REM "KING JIM"
+robocopy "%RobocopySource%\Roaming\KING JIM" "%RobocopySendto%\Roaming\KING JIM" %RobocopyOptions%
+
+
+
+echo.
+echo "レジストリのバックアップフォルダ準備 開始日時：%date% %time%"
+    rmdir /s /q "%RegArcTmpDir%"
+    mkdir "%ArchiveSendto%"
+    mkdir "%RegArcTmpDir%\32bit"
+    mkdir "%RegArcTmpDir%\64bit"
+echo.
+echo "レジストリファイルの書き出し32bit 開始日時：%date% %time%"
+    REG EXPORT HKCR "%RegArcTmpDir%\32bit\HKEY_CLASSES_ROOT32.reg"   /reg:32
+    REG EXPORT HKCU "%RegArcTmpDir%\32bit\HKEY_CURRENT_USER32.reg"   /reg:32
+    REG EXPORT HKLM "%RegArcTmpDir%\32bit\HKEY_LOCAL_MACHINE32.reg"  /reg:32
+    REG EXPORT HKU  "%RegArcTmpDir%\32bit\HKEY_USERS32.reg"          /reg:32
+    REG EXPORT HKCC "%RegArcTmpDir%\32bit\HKEY_CURRENT_CONFIG32.reg" /reg:32
+echo.
+echo "レジストリファイルの書き出し64bit 開始日時：%date% %time%"
+    REG EXPORT HKCR "%RegArcTmpDir%\64bit\HKEY_CLASSES_ROOT64.reg"   /reg:64
+    REG EXPORT HKCU "%RegArcTmpDir%\64bit\HKEY_CURRENT_USER64.reg"   /reg:64
+    REG EXPORT HKLM "%RegArcTmpDir%\64bit\HKEY_LOCAL_MACHINE64.reg"  /reg:64
+    REG EXPORT HKU  "%RegArcTmpDir%\64bit\HKEY_USERS64.reg"          /reg:64
+    REG EXPORT HKCC "%RegArcTmpDir%\64bit\HKEY_CURRENT_CONFIG64.reg" /reg:64
+echo.
+echo "レジストリファイルの圧縮 開始日時：%date% %time%"
+    %PsCompCmd% '"%RegArcTmpDir%"' -DestinationPath '"%ArchiveSendto%\レジストリ.zip"'
+echo.
+echo "作業用一時ファイルの削除 開始日時：%date% %time%"
+    rmdir /s /q "%RegArcTmpDir%"
+
+echo.
+echo "圧縮して保存する例 開始日時：%date% %time%"
+%PsCompCmd% '"c:\test"' -DestinationPath '"%ArchiveSendto%\test.zip"'
+
+pause
